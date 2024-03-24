@@ -76,11 +76,11 @@ theme_mode: # [light | dark]
 img_cdn: 
 
 # the avatar on sidebar, support local or CORS resources
-avatar: https://labs.hackthebox.com/storage/avatars/15721a475b6e33406c84f272fe5ea7c7.png?v=14
+avatar: /assets/images/n0xturne.png
 
 # The URL of the site-wide social preview image used in SEO `og:image` meta tag.
 # It can be overridden by a customized `page.image` in front matter.
-social_preview_image: https://labs.hackthebox.com/storage/avatars/15721a475b6e33406c84f272fe5ea7c7.png?v=14 # string, local or CORS resources
+social_preview_image: /assets/images/n0xturne.png # string, local or CORS resources
 
 # boolean type, the global switch for TOC in posts.
 toc: true
