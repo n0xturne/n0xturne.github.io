@@ -1,13 +1,15 @@
 ---
 layout: post
-title: OSCP Cheat Sheet
+title: OSCP Cheat Sheet 2024
 date: 2024-05-31 12:00:00 +0100
 published: true
 categories: [OSCP]
 tags: [OSCP]
 ---
 
-![[oscpBadge.png]]
+<p align="center">
+  <img src="https://github.com/n0xturne/OSCP-Cheat-Sheet-2024/blob/main/images/OSCPbadge.png" />
+</p>
 
 ___
 
