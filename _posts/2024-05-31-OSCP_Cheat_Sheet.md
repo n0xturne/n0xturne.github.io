@@ -7,9 +7,7 @@ categories: [OSCP]
 tags: [OSCP]
 ---
 
-<p align="center">
-  <img src="https://github.com/n0xturne/OSCP-Cheat-Sheet-2024/blob/main/images/OSCPbadge.png" />
-</p>
+<img src="https://github.com/n0xturne/OSCP-Cheat-Sheet-2024/blob/main/images/OSCPbadge.png" />
 
 ___
 
