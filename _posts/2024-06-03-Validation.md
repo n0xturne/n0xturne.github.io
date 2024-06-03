@@ -7,6 +7,8 @@ categories: [Hack The Box]
 tags: [Hack The Box]
 ---
 
+![validationBadge.png](/assets/img/Validation/validationBadge.png)
+
 ## Summary
 
 While testing functionality of application on port 80 I found out that `country` parameter is vulnerable to SQL Injection. I was able to determine specific number of columns in the table using `ORDER` query. With this knowledge I was able to write files on web server via `SELECT INTO_OUTFILE`. I created `webshell.php` in the apache `webroot` and used URL encoded bash payload to get reverse shell on system. While enumerating system as user `www-data` I stumbled upon interesting file `/var/www/html/config.php`. File contains credentials for `mysql` , so I tried to reuse this password and log in as user `root`. This proved to be valid password and I got access as `root`.
