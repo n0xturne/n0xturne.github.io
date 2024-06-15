@@ -48,7 +48,7 @@ nginx 1.18.0
 
 ##### Website
 
-![[Hack The Box/Boxes/Easy/Photobomb/Screenshots/80.png]]
+![80.png](/assets/img/Photobomb/80.png)
 
 Clicking on link prompts us for credentials. 
 
@@ -126,7 +126,7 @@ stty raw -echo && fg
 ### User.txt
 
 ![userFlag.png](/assets/img/Photobomb/userFlag.png)
-_____
+
 ## Privilege Escalation
 
 ### System Enumeration
@@ -137,7 +137,7 @@ We can see that user `wizzard` can run script `/opt/cleanup.sh` with `sudo` priv
 sudo -l
 ```
 
-![[Hack The Box/Boxes/Easy/Photobomb/Screenshots/sudoL.png]]
+![sudoL.png](/assets/img/Photobomb/sudoL.png)
 
 Inspecting `cleanup.sh` we can see that path for `find` is not specified which can be abused by hijacking path. 
 
@@ -160,7 +160,7 @@ sudo PATH=/tmp:$PATH /opt/cleanup.sh
 ```
 
 ![escalation.png](/assets/img/Photobomb/escalation.png)
-___
+
 ## Post Exploitation
 
 ### Root.txt
