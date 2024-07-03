@@ -127,7 +127,7 @@ paginate: 10
 
 # The base URL of your site
 baseurl: ""
-plugins:
+gems:
   - jekyll-sitemap
 
 # ------------ The following options are not recommended to be modified ------------------
