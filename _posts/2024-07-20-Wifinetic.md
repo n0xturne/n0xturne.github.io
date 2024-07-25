@@ -11,8 +11,8 @@ tags: [Hack The Box]
 
 ## Summary
 
-By using anonymous login I was able to log in to `ftp` server and download all files listed there to my local machine for further inspection. Most interesting file is `backup-OpenWrt-2023-07-26.tar`. I was able to extract files from this archive and by inspecting contents of these files I found valid credentials to `ssh` in box as user `netadmin`. While enumerating system as user `netadmin` I found there are some wireless interfaces present on the system. I used `iwconfig` to further display information about these interfaces. One of these interfaces, namely `mon0` is in monitor mode. This can be exploited by doing `WPS` brute-force. To perform this attack we need wireless interface in monitoring mode (`mon0`) and BSSID of the Access Point. To obtain BSSID I used `iw dev` command. 
-I was able to perform this attack using `reaver` tool which is pre-installed on the victim machine. A Successful attack resulted in obtaining WPA password which can be used to access system as root. 
+By using anonymous login, I was able to access `ftp` server. There are several files listed there, so I downloaded them to my local machine for further inspection. Most interesting file is `backup-OpenWrt-2023-07-26.tar`. After extracting backup file, I got access to `/etc/` directory. By inspecting contents of files inside, I found valid credentials that allowed me to `ssh` into the system as user `netadmin`. While enumerating system as user `netadmin` I discovered wireless interfaces and used `iwconfig` to display more information about them. One of these interfaces, namely `mon0`, was in monitor mode. This can be exploited by doing WPS brute-force. To perform this attack we need wireless interface in monitoring mode (`mon0`) and BSSID of the Access Point. To obtain BSSID, I used `iw dev` command. 
+I was able to perform this attack using `reaver` tool, which was pre-installed on the system. A successful attack resulted in obtaining WPA password, which can be used to gain root access to the system.
 
 ## Reconnaissance
 
@@ -71,7 +71,7 @@ ftp anonymous@10.10.11.247
 
 ![ftp.png](/assets/img/Wifinetic/ftp.png)
 
-By inspecting documents I was able to gather some usernames which could come in handy later.
+By inspecting documents, I collected several usernames that could come in handy later.
 
 ```
 HR Manager
@@ -95,7 +95,7 @@ After extracting `.tar` archive I was presented with these files:
 
 ![etcPasswd.png](/assets/img/Wifinetic/etcPasswd.png)
 
-Analyzing files in `/etc/config` directory I found plaintext password in `wireless` file.  
+By analyzing files in `/etc/config` directory, I found plaintext password in `wireless` file.  
 
 ![configWirteless2.png](/assets/img/Wifinetic/configWirteless2.png)
 
@@ -107,7 +107,7 @@ VeRyUniUqWiFIPasswrd1!
 
 ### Initial Foothold
 
-We can `ssh` into the box using credentials found during enumeration phase. 
+The credentials discovered during the enumeration phase are valid for `SSH` access to the system. 
 
 ```
 netadmin : VeRyUniUqWiFIPasswrd1!
@@ -127,7 +127,7 @@ ip addr
 
 ![ipaddr.png](/assets/img/Wifinetic/ipaddr.png)
 
-We can use `iwconfig` to further display information related to wireless interfaces. 
+I used `iwconfig` to display more information related to wireless interfaces. 
 
 ```
 iwconfig
@@ -135,12 +135,13 @@ iwconfig
 
 ![iwconfig.png](/assets/img/Wifinetic/iwconfig.png)
 
-We should note that `mon0` interface is in monitor mode. Monitor mode allows `wifi` interface to monitor all traffic in wireless network.   
+It is worth noting that the `mon0` interface is in monitor mode. Monitor mode allows `wifi` interface to monitor all traffic on the wireless network. 
+
 ### Privilege Escalation
 
 #### WPS Bruteforce
 
-To perform this attack I will use tool called `reaver` which is already installed on victim machine. In order to successfully perform this attack we need few things. First we need to specify interface which is in monitoring mode (`mon0`) and BSSID of the Access Point. To obtain BSSID I used `iw dev` command.
+To perform this attack, I used tool called `reaver` which was already installed on system. In order to successfully perform this attack we need few things. First we need to specify interface which is in monitoring mode (`mon0`) and BSSID of the Access Point. To obtain BSSID, I used `iw dev` command.
 
 ```
 iw dev
@@ -156,13 +157,13 @@ reaver -i mon0 -b 02:00:00:00:00:00
 
 ![reaver.png](/assets/img/Wifinetic/reaver.png)
 
-Attack was successful and I was able to obtained WPA password.
+Attack was successful and I obtained WPA password.
 
 ```
 WhatIsRealAnDWhAtIsNot51121!
 ```
 
-Trying this password for root we can get access with full privileges. 
+This password can be used to get root access to the system. 
 
 ![escalation.png](/assets/img/Wifinetic/escalation.png)
 

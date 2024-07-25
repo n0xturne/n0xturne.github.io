@@ -11,8 +11,8 @@ tags: [Hack The Box]
 
 ## Summary
 
- `Nmap` revealed that server is vulnerable to `Heartbleed`. Exploiting this I was able to retrieve memory leak which contained base64 encoded string that decodes to `heartbleedbelievethehype`. 
-By brute forcing directories on port 80 I was able to find `/dev/` directory which contains `hype_key`. By inspecting contents of `hype_key`, I was able to determine that it is hex encoded. To decode it I used `xxd`. Decoded file proved to be encrypted `rsa` key. After decrypting file with `openssl` I was able to `ssh` into the box as user `hype`. Enumerating system with `linpeas.sh` revealed that root is running `/usr/bin/tmux -S /.devs/dev_sess` command. To get access to this root session we can replicate same command. 
+ Nmap revealed that server is vulnerable to `Heartbleed`. By exploiting this, I was able to retrieve memory leak which contained base64 encoded string that decodes to `heartbleedbelievethehype`. 
+By brute-forcing directories on port 80, I discovered the `/dev/` directory, which contained `hype_key` file. After inspecting contents of `hype_key`, I was able to determine that it is hex encoded. I used `xxd` for decoding. Decoded file proved to be encrypted `rsa` key. After decrypting file with `openssl`, I was able to `ssh` into the system as user `hype`. Enumerating system with `linpeas.sh` revealed that root is running `/usr/bin/tmux -S /.devs/dev_sess` command. To get access to this `tmux` session we can replicate the same command. 
 
 
 ## Reconnaissance
@@ -61,7 +61,7 @@ nmap --script vuln 10.10.10.79
 
 ##### Heartbleed Bug
  
- `Nmap` revealed that server is vulnerable to [Heartbleed](https://heartbleed.com/). For exploitation I used this python [script](https://gist.github.com/eelsivart/10174134) which leaked part of memory which contains `$text` variable. 
+ Nmap revealed that server is vulnerable to [Heartbleed](https://heartbleed.com/). For exploitation, I used this python [script](https://gist.github.com/eelsivart/10174134) which resulted in the leakage of a portion of memory containing the `$text` variable. 
 
 ```
 python2 heartbleed.py 10.10.10.79 -p 443
@@ -69,7 +69,7 @@ python2 heartbleed.py 10.10.10.79 -p 443
 
 ![exploit.png](/assets/img/Valentine/exploit.png)
 
-String looks like base64 and after decoding it we get `heartbleedbelievethehype`.
+String looks like it's base64 encoded. Decoding it returns string `heartbleedbelievethehype`.
 
 ![decode.png](/assets/img/Valentine/decode.png)
 
@@ -91,7 +91,7 @@ dirsearch -e php,asp,aspx,jsp,py,txt,conf,config,bak,backup,swp,old,db,sql -u ht
 
 ![dev.png](/assets/img/Valentine/dev.png)
 
-By inspecting contents of `hype_key`, we can see that it is hex encoded. To decode it I used `xxd`.
+By inspecting contents of `hype_key`, I could determine that it is hex encoded. To decode it I used `xxd`.
 
 ```
 cat hype_key | xxd -r -p > id_rsa_enc
@@ -112,7 +112,7 @@ openssl rsa -in id_rsa_enc -out id_rsa
 
 ### SSH - hype
 
-With decrypted `rsa` key I was able to `ssh` into the box as user `hype`.
+With decrypted `rsa` key, I was able to `ssh` into the system as user `hype`.
 
 ```
 ssh -o PubkeyAcceptedKeyTypes=ssh-rsa -i id_rsa hype@10.10.10.79
@@ -135,7 +135,7 @@ Running `linpeas.sh` revealed that `root` is running `/usr/bin/tmux -S /.devs/de
  
 ![linpeas.png](/assets/img/Valentine/linpeas.png)
 
-To access this `tmux` session we can use same command. 
+To access this `tmux` session, I used the same command. 
 
 ```
 /usr/bin/tmux -S /.devs/dev_sess 
@@ -147,7 +147,7 @@ Running this command resulted in error: `open terminal failed: missing or unsuit
 export TERM=xterm
 ```
 
-After that we are able to connect to `root` session.
+After that I was able to connect to `tmux` session with root privileges.
 
 ![root.png](/assets/img/Valentine/root.png)
 

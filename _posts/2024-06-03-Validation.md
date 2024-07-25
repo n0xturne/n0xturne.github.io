@@ -11,7 +11,7 @@ tags: [Hack The Box]
 
 ## Summary
 
-While testing functionality of application on port 80 I found out that `country` parameter is vulnerable to SQL Injection. I was able to determine specific number of columns in the table using `ORDER` query. With this knowledge I was able to write files on web server via `SELECT INTO_OUTFILE`. I created `webshell.php` in the apache `webroot` and used URL encoded bash payload to get reverse shell on system. While enumerating system as user `www-data` I stumbled upon interesting file `/var/www/html/config.php`. File contains credentials for `mysql` , so I tried to reuse this password and log in as user `root`. This proved to be valid password and I got access as `root`.
+While testing functionalities of application on port 80, I discovered that `country` parameter is vulnerable to SQL Injection. I was able to determine specific number of columns in the table by using `ORDER` query. With this knowledge, I was able to write files on web server via `SELECT INTO_OUTFILE`. I created `webshell.php` in the apache `webroot` and used `URL` encoded bash payload to get reverse shell on system. While enumerating system as user `www-data`, I stumbled upon interesting file `/var/www/html/config.php`. File contains credentials for `mysql` , so I tried to reuse this password and log in as user `root`. This proved to be valid password and I got root access to the system.
 
 ___
 ## Reconnaissance
@@ -61,7 +61,7 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 ![dirsearch.png](/assets/img/Validation/dirsearch.png)
 
-While testing functionality of application I placed single quote in the `country` parameter which resulted in error. This indicates that application could be vulnerable to SQL Injection and requires further testing. 
+While testing functionality of application, I placed single quote in the `country` parameter which resulted in error. This indicates that application could be vulnerable to SQL Injection and requires further testing. 
 
 ![sqlTest.png](/assets/img/Validation/sqlTest.png)
 
@@ -156,7 +156,7 @@ uhc : uhc-9qual-global-pw
 
 ### Logging as root
 
-I was able to log in as root using password found in `config.php`.
+By using password found in `config.php`, I obtained root access to the system.
 
 ```
 root : uhc-9qual-global-pw
