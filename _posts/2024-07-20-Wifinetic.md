@@ -18,7 +18,7 @@ I was able to perform this attack using `reaver` tool, which was pre-installed o
 
 ### Nmap
 
-```
+```bash
 nmap -sV -sC -p- -oN ./nmapAll.txt --max-retries=1 10.10.11.247
 ```
 
@@ -65,7 +65,7 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
 Anonymous access is allowed so I was able to log in. 
 
-```
+```bash
 ftp anonymous@10.10.11.247
 ```
 
@@ -121,7 +121,7 @@ netadmin : VeRyUniUqWiFIPasswrd1!
 
 I used `ip` command to display all network interfaces which revealed multiple wireless interfaces.
 
-```
+```bash
 ip addr
 ```
 
@@ -129,7 +129,7 @@ ip addr
 
 I used `iwconfig` to display more information related to wireless interfaces. 
 
-```
+```bash
 iwconfig
 ```
 
@@ -143,7 +143,7 @@ It is worth noting that the `mon0` interface is in monitor mode. Monitor mode al
 
 To perform this attack, I used tool called `reaver` which was already installed on system. In order to successfully perform this attack we need few things. First we need to specify interface which is in monitoring mode (`mon0`) and BSSID of the Access Point. To obtain BSSID, I used `iw dev` command.
 
-```
+```bash
 iw dev
 ```
 
@@ -151,7 +151,7 @@ iw dev
 
 Now with all information needed we can perform the attack.
 
-```
+```bash
 reaver -i mon0 -b 02:00:00:00:00:00
 ```
 

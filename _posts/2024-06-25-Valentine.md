@@ -19,7 +19,7 @@ By brute-forcing directories on port 80, I discovered the `/dev/` directory, whi
 
 ### Nmap
 
-```
+```bash
 nmap -sV -sC -p- -oN ./nmapAll.txt --max-retries=1 10.10.10.79
 ```
 
@@ -43,7 +43,7 @@ PORT    STATE SERVICE  VERSION
 Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 ```
 
-```
+```bash
 nmap --script vuln 10.10.10.79
 ```
 
@@ -77,9 +77,9 @@ String looks like it's base64 encoded. Decoding it returns string `heartbleedbel
 
 ![80-443.png](/assets/img/Valentine/80-443.png)
 
-##### Dirsearch
+##### Web Content Discovery
 
-```
+```bash
 dirsearch -e php,asp,aspx,jsp,py,txt,conf,config,bak,backup,swp,old,db,sql -u http://valentine.htb
 ```
 
@@ -93,7 +93,7 @@ dirsearch -e php,asp,aspx,jsp,py,txt,conf,config,bak,backup,swp,old,db,sql -u ht
 
 By inspecting contents of `hype_key`, I could determine that it is hex encoded. To decode it I used `xxd`.
 
-```
+```bash
 cat hype_key | xxd -r -p > id_rsa_enc
 ```
 
@@ -101,7 +101,7 @@ cat hype_key | xxd -r -p > id_rsa_enc
 
 Inspecting decoded file reveals that key is encrypted. We can use `openssl` for decryption. For pass phrase I used `heartbleedbelievethehype`. 
 
-```
+```bash
 openssl rsa -in id_rsa_enc -out id_rsa
 ```
 
@@ -114,7 +114,7 @@ openssl rsa -in id_rsa_enc -out id_rsa
 
 With decrypted `rsa` key, I was able to `ssh` into the system as user `hype`.
 
-```
+```bash
 ssh -o PubkeyAcceptedKeyTypes=ssh-rsa -i id_rsa hype@10.10.10.79
 ```
 
@@ -137,13 +137,13 @@ Running `linpeas.sh` revealed that `root` is running `/usr/bin/tmux -S /.devs/de
 
 To access this `tmux` session, I used the same command. 
 
-```
+```bash
 /usr/bin/tmux -S /.devs/dev_sess 
 ```
 
 Running this command resulted in error: `open terminal failed: missing or unsuitable terminal: tmux-256color`, which can be fixed by this command:
 
-```
+```bash
 export TERM=xterm
 ```
 
